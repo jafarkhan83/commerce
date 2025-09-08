@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ type }}</h2>
+
+    <div class="grid-container">
+        {% for list in listing %}
+            <a href="{% url 'listing' list.id %}" style="text-decoration: none; color: inherit;">
+            <div class="card d-flex flex-row">
+                <img src="{{ list.image_url }}" class="card-img-left" alt="{{ list.title }}" style="width:200px; height:150px; object-fit:cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ list.title }}</h5>
+                    <p class="card-text">{{ list.discription }}</p>
+                    <p class="card-text text-success font-weight-bold">${{ list.price }}</p>
+                    <p class="card-text"><small class="text-muted">{{ list.date }}</small></p>
+                
+                    {% if not list.is_active %}
+                        {% for win in winner %}
+                            {% if win == list %}
+                                <p class="card-text"><small class="card-text text-success font-weight-bold">Congratulations: You won this auction</small></p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <h3>{{ message }}</h3>
+
+    <form action="{% url 'createListing' user.id %}" method="post">
+      {% csrf_token %}
+      <div class="input-group mb-3">
+            <input type="text" name="title" class="form-control" placeholder="Title" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+
+      <div class="input-group">
+            <textarea class="form-control" name="description" aria-label="With textarea" placeholder="Description"></textarea>
+      </div>
+
+      <div style="padding-top: 15px;" class="input-group mb-3">
+            <span class="input-group-text">$</span>
+            <input name="price" type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text">.00</span>
+      </div>
+
+      <div class="mb-3">
+            <label for="basic-url" class="form-label">Your Image URL</label>
+            <div class="input-group">
+                  <span class="input-group-text" id="basic-addon3">https://example.com/users/image.jpg</span>
+                  <input name="url" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+            </div>
+      </div>
+
+      <div class="input-group mb-3">
+            <input name="category" type="text" class="form-control" placeholder="Category" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+
+      <div class="input-group mb-3">
+            <input class="btn btn-secondary" type="submit" value="Add">
+      </div>
+
+    </form>
+{% endblock%}

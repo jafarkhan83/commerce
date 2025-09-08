@@ -1,0 +1,67 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing: {{ listing.title }}</h2>
+
+    {% if user.is_authenticated %}
+      <form action="{% url 'watchlist' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-secondary" value="{{ watchlist }}">
+      </form>
+    {% endif%}
+      <div class="card">
+            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.title }}" style="width:700; height:500px; object-fit:cover;">
+            <div class="card-body">
+                  <p class="card-text">{{ listing.discription }}</p>
+                  <p class="card-text text-success font-weight-bold">${{ listing.price }}.00</p>
+                  
+                  {% if winner %}
+                  <p class="card-text text-success font-weight-bold">Congratulations: You won this auction</p>
+                  {% endif %}
+
+                  {% if user.is_authenticated and listing.is_active %}
+                  <p>Bid details</p>
+                  <p>{{ message }}</p>
+                  <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-2"> <input type="number" name="bid" placeholder="Bid"> </div>
+                        <div class="mb-2"> <input name="place_bid" class="btn btn-primary" type="submit" value="Place bid"> </div>
+                  </form>
+                  {% endif %}
+
+                  <h4>Details</h4>
+                  <ul>
+                        <li>Listed by: {{listing.user_id}}</li>
+                        <li>Category: {{listing.categories}}</li>
+                  </ul>
+
+                  {% if user.is_authenticated and user == listing.user_id and listing.is_active %}
+                  <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-2"> <input name="close_bid" class="btn btn-danger" type="submit" value="Close listing"> </div>
+                  </form>
+                  {% endif %}
+
+                  {% if user.is_authenticated %}                        
+                      <form action="{% url 'listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                              <input class="form-control" type="text" name="comment_text" placeholder="Type Comment">
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Post" name="comment">
+                  </form>
+                  {% endif %}
+
+                  {% for comment in comments %}
+                        <li class="list-group-item mt-2">
+                              <strong>{{ comment.user_id.username }}</strong>
+                              <small class="text-muted"> • {{ comment.timestamp|date:"M d, Y H:i" }}</small>
+                              <p class="mb-0">{{ comment.comment }}</p>
+                        </li>
+                  {% empty %}
+                        <li class="list-group-item text-muted mt-2">No comments yet.</li>
+                  {% endfor %}
+            </div>
+      </div>
+
+{% endblock %}
