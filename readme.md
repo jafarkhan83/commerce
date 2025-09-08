@@ -54,17 +54,21 @@ Models
    cd commerce
 
 2. Install dependencies
+   ```bash
 	pip install -r requirements.txt
 
-3. Apply migrations
+4. Apply migrations
+   ```bash
 	python manage.py makemigrations
 	python manage.py migrate
 
-4. Create a superuser (optional, for admin access)
+5. Create a superuser (optional, for admin access)
+   	```bash
 	python manage.py createsuperuser
 
-5. Run the development server
+6. Run the development server
+   ```bash
 	python manage.py runserver
 
-6. Open the site in your browser
+8. Open the site in your browser
 	http://localhost:8000
